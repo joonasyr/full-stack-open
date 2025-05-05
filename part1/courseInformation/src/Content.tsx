@@ -6,8 +6,8 @@ const Content = (props) => {
 
 	return (
 		<div>
-			{parts.map((part, index) => (
-				<Part part={part} exercises={exercises[index]} key={index} />
+			{parts.map(part => (
+				<Part part={part.name} exercises={part.exercises} key={part.name} />
 			))}
 		</div>
 	)
