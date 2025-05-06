@@ -16,16 +16,31 @@ const App = () => {
 	const [votes, setVotes] = useState({})
 
 	const handleVote = (selected) => {
+		const temp = {...votes}
+
 		if (!votes[selected]) {
-			const temp = {}
 			temp[selected] = 1
 			setVotes(temp)
 		} else {
-			const temp = {...votes}
 			temp[selected] += 1
 			setVotes(temp)
 		}
 	}
+
+	const getMostVoted = () => {
+		const keys = Object.keys(votes)
+		if (keys.length === 0) return null
+
+		let maxIndex = keys[0]
+		for (let key of keys) {
+			if (votes[key] > votes[maxIndex]) {
+				maxIndex = key
+			}
+		}
+		return Number(maxIndex)
+	}
+
+	const mostVotedIndex = getMostVoted()
 
   return (
     <div>
@@ -33,6 +48,9 @@ const App = () => {
 			<p>has {votes[selected] || 0} votes</p>
 			<button onClick={() => handleVote(selected)}>vote</button>
 			<button onClick={() => setSelected(Math.floor(Math.random() * anecdotes.length))}>next anecdote</button>
+			<h2>Anecdote with most votes</h2>
+			<p>{anecdotes[mostVotedIndex]}</p>
+			<p>has {votes[mostVotedIndex]} votes</p>
     </div>
   )
 }
