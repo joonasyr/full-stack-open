@@ -29,10 +29,18 @@ const App = () => {
 			<p>neutral {neutral}</p>
 			<p>bad {bad}</p>
 			<p>all {all}</p>
-			<p>average {all > 0 ? (good - bad) / all : 0}</p>
-			<p>positive {all > 0 ? (good) / all * 100 : 0} %</p>
+			<Statistics all={all} good={good} bad={bad} />
 		</>
 	)
 }
 
 export default App
+
+const Statistics = ({all, good, bad}) => {
+	return (
+		<>
+			<p>average {all > 0 ? (good - bad) / all : 0}</p>
+			<p>positive {all > 0 ? (good) / all * 100 : 0} %</p>
+		</>
+	)
+}
