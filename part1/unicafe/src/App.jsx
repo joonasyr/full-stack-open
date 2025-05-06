@@ -41,12 +41,16 @@ const Statistics = ({all, good, neutral, bad}) => {
 		{all > 0 ?
 			<>
 				<h2>statistics</h2>
-				<StatisticsLine text={'good'} value={good} />
-				<StatisticsLine text={'neutral'} value={neutral} />
-				<StatisticsLine text={'bad'} value={bad} />
-				<StatisticsLine text={'all'} value={all} />
-				<StatisticsLine text={'average'} value={(good - bad) / all} />
-				<StatisticsLine text={'positive'} value={`${(good / all * 100).toFixed(3)} %`} />
+				<table>
+					<tbody>
+						<StatisticsLine text={'good'} value={good} />
+						<StatisticsLine text={'neutral'} value={neutral} />
+						<StatisticsLine text={'bad'} value={bad} />
+						<StatisticsLine text={'all'} value={all} />
+						<StatisticsLine text={'average'} value={(good - bad) / all} />
+						<StatisticsLine text={'positive'} value={`${(good / all * 100).toFixed(3)} %`} />
+					</tbody>
+				</table>
 			</>
 			: <p>no feedback given</p>}
 		</>
@@ -55,6 +59,9 @@ const Statistics = ({all, good, neutral, bad}) => {
 
 const StatisticsLine = ({text, value}) => {
 	return (
-		<p>{text} {value}</p>
+		<tr>
+			<td>{text}</td>
+			<td>{value}</td> 
+		</tr>
 	)
 }
