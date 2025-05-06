@@ -21,9 +21,9 @@ const App = () => {
 	return (
 		<>
 			<h2>give feedback</h2>
-			<button onClick={() => handleClick('good')}>good</button>
-			<button onClick={() => handleClick('neutral')}>neutral</button>
-			<button onClick={() => handleClick('bad')}>bad</button>
+			<Button onClick={() => handleClick('good')} text={'good'} />
+			<Button onClick={() => handleClick('neutral')} text={'neutral'} />
+			<Button onClick={() => handleClick('bad')} text={'bad'} />
 			<Statistics all={all} good={good} neutral={neutral} bad={bad} />
 		</>
 	)
@@ -31,20 +31,30 @@ const App = () => {
 
 export default App
 
+const Button = ({onClick, text}) => {
+	return <button onClick={onClick}>{text}</button>
+}
+
 const Statistics = ({all, good, neutral, bad}) => {
 	return (
 		<>
 		{all > 0 ?
 			<>
 				<h2>statistics</h2>
-				<p>good {good}</p>
-				<p>neutral {neutral}</p>
-				<p>bad {bad}</p>
-				<p>all {all}</p>
-				<p>average {(good - bad) / all}</p>
-				<p>positive {(good) / all * 100} %</p>
+				<StatisticsLine text={'good'} value={good} />
+				<StatisticsLine text={'neutral'} value={neutral} />
+				<StatisticsLine text={'bad'} value={bad} />
+				<StatisticsLine text={'all'} value={all} />
+				<StatisticsLine text={'average'} value={(good - bad) / all} />
+				<StatisticsLine text={'positive'} value={`${(good / all * 100).toFixed(3)} %`} />
 			</>
 			: <p>no feedback given</p>}
 		</>
+	)
+}
+
+const StatisticsLine = ({text, value}) => {
+	return (
+		<p>{text} {value}</p>
 	)
 }
