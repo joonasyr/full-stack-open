@@ -3,6 +3,7 @@ import Filter from './components/Filter.tsx'
 import PersonForm from './components/PersonForm.tsx'
 import Persons from './components/Persons.tsx'
 import axios from 'axios'
+import personService from './services/personService.tsx'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
@@ -11,9 +12,11 @@ const App = () => {
 	const [filter, setFilter] = useState('')
 
 	useEffect(() => {
-		axios
-			.get('http://localhost:3001/persons')
-			.then(response => setPersons(response.data))
+		personService
+			.getAll()
+			.then(initialPersons => {
+				setPersons(initialPersons)
+			})
 	}, [])
 
 	const handleSubmit = (e) => {
@@ -23,7 +26,12 @@ const App = () => {
 			number: newNumber
 		}
 		if (!isDuplicate(newName)){
-			setPersons(persons.concat(newPerson))
+			personService
+				.create(newPerson)
+				.then(addedPerson => {
+					setPersons(persons.concat(addedPerson))
+					setNewNumber('')
+					setNewName('')})
 		} else {
 			alert(`${newName} already added to the phonebook`)
 		}
