@@ -36,6 +36,15 @@ const App = () => {
 			alert(`${newName} already added to the phonebook`)
 		}
 	}
+	
+	const handleDelete = (id)  => {
+		const person = persons.find(p => p.id === id)
+		if (window.confirm(`Delete ${person.name}?`)) {
+			personService.deletePerson(person.id).then(() => {
+				setPersons(persons.filter(p => p.id !== id))
+			})
+		}
+	}
 
 	const isDuplicate = (name) => {
 		return persons.some(person => person.name === name)
@@ -57,7 +66,7 @@ const App = () => {
 			<h3>Add a new</h3>
 			<PersonForm handleSubmit={handleSubmit} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} isDuplicate={isDuplicate} />
 			<h3>Numbers</h3>
-			<Persons persons={persons} filter={filter} />
+			<Persons persons={persons} filter={filter} deletePerson={handleDelete} />
 		</div>
       )
 }
