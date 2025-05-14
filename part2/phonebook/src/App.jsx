@@ -33,7 +33,23 @@ const App = () => {
 					setNewNumber('')
 					setNewName('')})
 		} else {
-			alert(`${newName} already added to the phonebook`)
+			const replace =	window.confirm(`${newName} already added to the phonebook, replace the old number with a new one?`)
+			const existingPerson = persons.find(p => p.name === newName)
+			if (replace && existingPerson) {
+				const updatedPerson = { ...existingPerson, number: newNumber }
+
+				personService
+					.update(updatedPerson)
+					.then(returnedPerson => {
+						setPersons(persons.map(p => p.id !== returnedPerson.id ? p : returnedPerson))
+						setNewName('')
+						setNewNumber('')
+					})
+					.catch(error => {
+						alert(`Information of ${existingPerson.name} was already removed from the server`)
+						setPersons(persons.filter(p => p.id !== existingPerson.id))
+					})
+			}
 		}
 	}
 	
