@@ -4,12 +4,15 @@ import PersonForm from './components/PersonForm.tsx'
 import Persons from './components/Persons.tsx'
 import axios from 'axios'
 import personService from './services/personService.tsx'
+import Notification from './components/Notification.tsx'
 
 const App = () => {
   const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('')
 	const [newNumber, setNewNumber] = useState('')
 	const [filter, setFilter] = useState('')
+	const [error, setError] = useState(false)
+	const [message, setMessage] = useState('')
 
 	useEffect(() => {
 		personService
@@ -31,7 +34,11 @@ const App = () => {
 				.then(addedPerson => {
 					setPersons(persons.concat(addedPerson))
 					setNewNumber('')
-					setNewName('')})
+					setNewName('')
+					setError(false)
+					setMessage(`Added ${newPerson.name}`)
+				})
+			setTimeout(() => setMessage(''), 5000)
 		} else {
 			const replace =	window.confirm(`${newName} already added to the phonebook, replace the old number with a new one?`)
 			const existingPerson = persons.find(p => p.name === newName)
@@ -44,11 +51,14 @@ const App = () => {
 						setPersons(persons.map(p => p.id !== returnedPerson.id ? p : returnedPerson))
 						setNewName('')
 						setNewNumber('')
+						setError(false)
+						setMessage(`Updated number of ${existingPerson.name}`)
 					})
 					.catch(error => {
 						alert(`Information of ${existingPerson.name} was already removed from the server`)
 						setPersons(persons.filter(p => p.id !== existingPerson.id))
 					})
+				setTimeout(() => setMessage(''), 5000)
 			}
 		}
 	}
@@ -78,6 +88,7 @@ const App = () => {
   return (
 		<div>
 			<h2>Phonebook</h2>
+			<Notification message={message} type={error ? 'error' : 'info'} />
 			<Filter filter={filter} handleFilterChange={handleFilterChange} />
 			<h3>Add a new</h3>
 			<PersonForm handleSubmit={handleSubmit} newName={newName} handleNameChange={handleNameChange} newNumber={newNumber} handleNumberChange={handleNumberChange} isDuplicate={isDuplicate} />
