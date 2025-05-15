@@ -55,7 +55,8 @@ const App = () => {
 						setMessage(`Updated number of ${existingPerson.name}`)
 					})
 					.catch(error => {
-						alert(`Information of ${existingPerson.name} was already removed from the server`)
+						setError(true)
+						setMessage(`Information of ${existingPerson.name} was already removed from the server`)
 						setPersons(persons.filter(p => p.id !== existingPerson.id))
 					})
 				setTimeout(() => setMessage(''), 5000)
