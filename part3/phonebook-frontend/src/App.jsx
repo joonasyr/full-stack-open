@@ -67,9 +67,7 @@ const App = () => {
 	const handleDelete = (id)  => {
 		const person = persons.find(p => p.id === id)
 		if (window.confirm(`Delete ${person.name}?`)) {
-			personService.deletePerson(person.id).then(() => {
-				setPersons(persons.filter(p => p.id !== id))
-			})
+			personService.deletePerson(person.id).then(() => { setPersons(persons.filter(p => p.id !== id)) })
 		}
 	}
 
