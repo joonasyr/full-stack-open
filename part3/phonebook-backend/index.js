@@ -1,6 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const morgan = require('morgan')
 const cors = require('cors')
+const Person = require('./modules/person')
 
 const app = express()
 app.use(express.json())
@@ -32,12 +34,10 @@ let persons = [
     }
 ] 
 
-app.get('/', (request, response) => {
-  response.json(persons)
-})
-
 app.get('/api/persons', (request, response) => {
-  response.json(persons)
+  Person.find({}).then(persons => {
+    response.json(persons)
+  })
 })
 
 app.get('/info', (request, response) => {
@@ -55,13 +55,15 @@ app.get('/info', (request, response) => {
 
 app.get('/api/persons/:id', (request, response) => {
   const id = request.params.id
-  const person = persons.find(person => person.id === id)
-
-  if (person) {
-    response.json(person)
-  } else {
-    response.status(404).end()
-  }
+  Person.findById(id)
+    .then(person => {
+      response.json(person)
+    })
+    .catch(error => {
+      response.status(400).json({
+        error: error.message
+      })
+    })
 })
 
 app.delete('/api/persons/:id', (request, response) => {
@@ -72,7 +74,6 @@ app.delete('/api/persons/:id', (request, response) => {
 })
 
 app.post('/api/persons', (request, response) => {
-  const id = Math.floor(Math.random() * 1_000_000_00).toString()
   const person = request.body
 
   if (!request.body.name) {
@@ -85,20 +86,26 @@ app.post('/api/persons', (request, response) => {
     })
   }
 
+  /*
   const nameExists = persons.some(p => p.name === request.body.name)
   if (nameExists) {
     return response.status(400).json({
       error: 'name must be unique'
     })
   }
+  */
 
-  const newPerson = { ...person, id }
-  persons = persons.concat(newPerson)
+  const newPerson = new Person({
+    name: person.name,
+    number: person.number,
+  })
+  newPerson.save().then(savedPerson => {
+    response.json(savedPerson)
+  })
   console.log("New person:", newPerson)
-  response.json(newPerson)
 })
 
-const PORT = process.env.PORT || 3001
+const PORT = process.env.PORT
 app.listen(PORT, () => {
   console.log(`Server listening on port ${PORT}`)
 })
