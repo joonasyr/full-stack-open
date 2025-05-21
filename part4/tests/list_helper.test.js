@@ -36,3 +36,28 @@ describe('total likes', () => {
     assert.strictEqual(result, 30)
   })
 })
+
+describe('favorite blog', () => {
+  test('of one given blog is itself', () => {
+    const blogs = [
+      { title: "A", author: "A", url: "A", likes: 5, }
+    ]
+
+    const result = listHelper.favoriteBlog(blogs)
+    assert.deepStrictEqual(result, blogs[0])
+  })
+
+  test('of a bigger list of blogs is calculated right', () => {
+    const blogs = [
+      { title: "A", author: "A", url: "A", likes: 5, },
+      { title: "B", author: "B", url: "B", likes: 6, },
+      { title: "C", author: "C", url: "C", likes: 8, },
+      { title: "D", author: "D", url: "D", likes: 7, },
+      { title: "E", author: "E", url: "E", likes: 1, }
+    ]
+
+    const result = listHelper.favoriteBlog(blogs)
+    assert.deepStrictEqual(result, { title: "C", author: "C", url: "C", likes: 8, })
+  })
+})
+
