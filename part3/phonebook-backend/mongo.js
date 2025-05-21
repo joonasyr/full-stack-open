@@ -26,10 +26,10 @@ if (process.argv.length === 5) {
   const number = process.argv[4]
   const person = new Person({
     name: name,
-    number: number 
+    number: number
   })
 
-  person.save().then(result => {
+  person.save().then(() => {
     console.log('person saved!')
     mongoose.connection.close()
   })

@@ -44,10 +44,10 @@ app.get('/api/persons/:id', (request, response, next) => {
     .catch(error => next(error))
 })
 
-app.delete('/api/persons/:id', (request, response) => {
+app.delete('/api/persons/:id', (request, response, next) => {
   const id = request.params.id
   Person.findByIdAndDelete(id)
-    .then(result => {
+    .then(() => {
       response.status(204).end()
     })
     .catch(error => next(error))
@@ -77,7 +77,7 @@ app.post('/api/persons', (request, response) => {
   newPerson.save().then(savedPerson => {
     response.json(savedPerson)
   })
-  console.log("New person:", newPerson)
+  console.log('New person:', newPerson)
 })
 
 const unknownEndpoint = (request, response) => {
