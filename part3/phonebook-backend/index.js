@@ -64,6 +64,10 @@ app.post('/api/persons', (request, response) => {
     return response.status(400).json({
       error: 'number missing'
     })
+  } else if (request.body.name.length < 3) {
+    return response.status(400).json({
+      error: 'name must be at least 3 characters long!'
+    })
   }
 
   const newPerson = new Person({

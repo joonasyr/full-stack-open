@@ -38,6 +38,10 @@ const App = () => {
 					setError(false)
 					setMessage(`Added ${newPerson.name}`)
 				})
+        .catch(error => {
+          setError(true)
+          setMessage(error.response.data.error)
+        })
 			setTimeout(() => setMessage(''), 5000)
 		} else {
 			const replace =	window.confirm(`${newName} already added to the phonebook, replace the old number with a new one?`)
