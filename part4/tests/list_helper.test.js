@@ -76,7 +76,7 @@ describe('most blogs', () => {
     assert.strictEqual(result, null)
   })
 
-  test('of one author if themself', () => {
+  test('of one author is themself', () => {
     const blogs = [
       { title: "A", author: "A", url: "A", likes: 5, }
     ]
@@ -101,5 +101,41 @@ describe('most blogs', () => {
 
     const result = listHelper.mostBlogs(blogs)
     assert.deepStrictEqual(result, { author: "D", blogs: 4 })
+  })
+})
+
+describe('most likes', () => {
+  test('of empty list is null', () => {
+    const blogs = []
+
+    result = listHelper.mostLikes(blogs)
+    assert.strictEqual(result, null)
+  })
+
+  test('of one author is themself', () => {
+    const blogs = [
+      { title: "A", author: "A", url: "A", likes: 5, }
+    ]
+
+    const result = listHelper.mostLikes(blogs)
+    assert.deepStrictEqual(result, { author: "A", likes: 5 })
+  })
+
+  test('of a bigger list is calculated right', () => {
+    const blogs = [
+      { title: "A", author: "A", url: "A", likes: 5, },
+      { title: "B", author: "B", url: "B", likes: 6, },
+      { title: "B", author: "B", url: "B", likes: 6, },
+      { title: "B", author: "B", url: "B", likes: 6, },
+      { title: "C", author: "C", url: "C", likes: 8, },
+      { title: "D", author: "D", url: "D", likes: 7, },
+      { title: "D", author: "D", url: "D", likes: 7, },
+      { title: "D", author: "D", url: "D", likes: 7, },
+      { title: "D", author: "D", url: "D", likes: 7, },
+      { title: "E", author: "E", url: "E", likes: 1, }
+    ]
+
+    const result = listHelper.mostLikes(blogs)
+    assert.deepStrictEqual(result, { author: "D", likes: 28 })
   })
 })
