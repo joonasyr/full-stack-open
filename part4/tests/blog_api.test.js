@@ -120,6 +120,31 @@ test('blog without url is rejected with 400', async () => {
     .expect(400)
 })
 
+test('a blog can be deleted', async () => {
+  const newBlog = {
+    title: 'To be deleted',
+    author: 'Author',
+    url: 'http://delete.me',
+    likes: 1
+  }
+
+  const response = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+
+  const blogToDelete = response.body
+
+  await api
+    .delete(`/api/blogs/${blogToDelete.id}`)
+    .expect(204)
+
+  const blogsAfter = await api.get('/api/blogs')
+  const ids = blogsAfter.body.map(b => b.id)
+
+  assert(!ids.includes(blogToDelete.id))
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
