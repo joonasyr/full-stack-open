@@ -56,6 +56,28 @@ test('blog unique identifier is changed from _id to id', async () => {
   assert(ids.length === response.body.length)
 })
 
+test('a new blog post is created', async () => {
+  const newBlog = {
+    title: 'New Blog',
+    author: 'New Author',
+    url: 'www.new.com',
+    likes: 10,
+  }
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+
+  const titles = response.body.map(e => e.title)
+
+  assert.strictEqual(response.body.length, initialBlogs.length + 1)
+
+  assert(titles.includes('New Blog'))
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
