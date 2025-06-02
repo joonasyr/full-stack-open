@@ -64,6 +64,36 @@ describe('when there is initially one user in db', () => {
   })
 })
 
+test('creation fails with short username', async () => {
+  const newUser = {
+    username: 'jo',
+    name: 'Too Short',
+    password: 'validpass'
+  }
+
+  const response = await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(400)
+
+  assert.match(response.body.error, /username.*at least 3/)
+})
+
+test('creation fails with short password', async () => {
+  const newUser = {
+    username: 'validuser',
+    name: 'Valid User',
+    password: 'pw'
+  }
+
+  const response = await api
+    .post('/api/users')
+    .send(newUser)
+    .expect(400)
+
+  assert.match(response.body.error, /password.*at least 3/)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
