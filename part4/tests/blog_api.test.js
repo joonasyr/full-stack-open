@@ -94,6 +94,32 @@ test('if likes is missing from request, it will default to 0', async () => {
   assert.strictEqual(response.body.likes, 0)
 })
 
+test('blog without title is rejected with 400', async () => {
+  const newBlog = {
+    author: 'Author Only',
+    url: 'http://example.com',
+    likes: 10
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
+
+test('blog without url is rejected with 400', async () => {
+  const newBlog = {
+    title: 'Missing URL',
+    author: 'Author',
+    likes: 5
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(400)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
