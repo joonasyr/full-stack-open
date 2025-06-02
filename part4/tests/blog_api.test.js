@@ -45,8 +45,15 @@ test('all blogs are returned', async () => {
 test('a specific blog is within the returned blogs', async () => {
   const response = await api.get('/api/blogs')
 
-  const contents = response.body.map(e => e.title)
-  assert(contents.includes('Number One'))
+  const titles = response.body.map(e => e.title)
+  assert(titles.includes('Number One'))
+})
+
+test('blog unique identifier is changed from _id to id', async () => {
+  const response = await api.get('/api/blogs')
+  
+  const ids = response.body.map(e => e.id)
+  assert(ids.length === response.body.length)
 })
 
 after(async () => {
