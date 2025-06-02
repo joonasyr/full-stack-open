@@ -145,6 +145,29 @@ test('a blog can be deleted', async () => {
   assert(!ids.includes(blogToDelete.id))
 })
 
+test('update likes of a blog post', async () => {
+  const newBlog = {
+    title: 'Update Likes',
+    author: 'Tester',
+    url: 'http://example.com',
+    likes: 0
+  }
+
+  const postResponse = await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+
+  const blogToUpdate = postResponse.body
+
+  const updateResponse = await api
+    .put(`/api/blogs/${blogToUpdate.id}`)
+    .send({ likes: 10 })
+    .expect(200)
+
+  assert.strictEqual(updateResponse.body.likes, 10)
+})
+
 after(async () => {
   await mongoose.connection.close()
 })
