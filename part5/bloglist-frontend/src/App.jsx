@@ -74,6 +74,8 @@ const App = () => {
           id: user.id
         }
       }
+      setBlogs(prev => [...prev, enrichedBlog].sort((a, b) => b.likes - a.likes))
+
       setNotifMessage({
         text: `New blog ${returnedBlog.title} by ${returnedBlog.author} added`,
         type: 'success',

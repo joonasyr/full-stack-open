@@ -13,7 +13,7 @@ const Blog = ({ blog, user, handleLike, deleteBlog }) => {
   const isOwner = blog.user && user && blog.user.username === user.username
 
   return(
-    <div style={blogStylings}>
+    <div data-testid='blog' style={blogStylings}>
       <div>
         {blog.title} {blog.author}
       </div>
